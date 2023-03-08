@@ -45,11 +45,11 @@ cd $HOME && git clone -v https://github.com/leonguyen52/serverbot-tg.git && cd .
  4. Open ./config.py and insert your bot API and your telegram id.
  5. Run script ./installsbot.sh for Ubuntu/Debian and ./installsbot_centos.sh for CentOS, source your bash or zsh to make bot start/stop commands working
 ```sh
-./installsbot.sh
+./installsbot_centos.sh
 ```
 ```sh
-source ${HOME}/.bash_aliases
-source ${HOME}/.zshrc
+source ~/.bashrc
+source ~/.zshrc
 ```
 
 
