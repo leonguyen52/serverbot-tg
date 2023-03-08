@@ -6,8 +6,8 @@ After=syslog.target
 Type=simple
 User=<user>
 Group=<user>
-ExecStart=/usr/bin/python3 /home/<user>/serverbot/bot.py --pidfile /home/<user>/serverbot/serverbot.pid
-ExecStop=pkill --pidfile /home/<user>/serverbot/serverbot.pid
+ExecStart=/usr/bin/python3 /root/serverbot/bot.py --pidfile /root/serverbot/serverbot.pid
+ExecStop=pkill --pidfile /root/serverbot/serverbot.pid
 
 [Install]
 WantedBy=multi-user.target
