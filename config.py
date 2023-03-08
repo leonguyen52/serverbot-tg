@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Bot config
 BotAPIKey = 'xxx' # API Keythat you get from @BotFather
-tg = xxx # Your id, you can get it by sending command /id to bot @TONTgIDBot
+tg = xxx # Your tg id, you can get it by sending command /id to bot @get_my_chat_id_bot
 serverbotpath = '/home/<user>/serverbot' # User folder with this bot.
 serverbotpathdb = '/home/<user>/serverbot/db' # User folder with bot database. 
 srvping = '1.1.1.1' # Ping test server
