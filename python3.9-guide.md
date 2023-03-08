@@ -18,8 +18,9 @@ cd Python-3.9.6 && ./configure --enable-optimizations
 make altinstall
 
 ### Check the name of your new Python executable.
+```sh
 ls /usr/local/bin/python*
-
+```
 ### Set the new Python executable as default. 
 
 ```sh
