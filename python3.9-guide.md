@@ -20,28 +20,39 @@ make altinstall
 ### Check the name of your new Python executable.
 ls /usr/local/bin/python*
 
-### Set the new Python executable as default. Start by registering python2 as an alternative, set python3 as python, use config to select option
+### Set the new Python executable as default. 
+
+```sh
+alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
+```
+or Start by registering python2 as an alternative, set python3 as python, use config to select option
 ```sh
 alternatives --install /usr/bin/python python /usr/bin/python2 50
 alternatives --install /usr/bin/python python /usr/bin/python3 60
 alternatives --config python
 ```
 
-2. Update Pip
+## 2. Update Pip
 Update pip. Use the name of your new Python executable in the following command.
-
-# /usr/local/bin/python3.9 -m pip install --upgrade pip
-Check the name of your new pip executable.
-
-# ls /usr/local/bin/pip*
+```sh
+/usr/local/bin/python3.9 -m pip install --upgrade pip
+```
+Check for existing
+```sh
+ls /usr/local/bin/pip*
+```
 Set the new pip as the default. Use the name of your new pip executable in the following command.
 
-# alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
+```sh
+alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
+
+```
 Check the current version of Python and pip.
 
-# python -V && pip -V
+```sh
+python -V && pip -V
+```
 You will see something like this:
 
 Python 3.9.6
-
 pip 21.2.3 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
