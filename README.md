@@ -1,7 +1,7 @@
 # ServerBot Readme
 This is telegram bot for server monitoring. 
 This bot can send messages to your telegram id
-Tested on ubuntu 18.04 & python 3.6.9
+Tested on ubuntu 18.04, cent 7 & python 3.9
 
 # What this bot can do?
 
@@ -35,23 +35,12 @@ Tested on ubuntu 18.04 & python 3.6.9
  9. Check network load
  10. Make a speedtest
 
-### Near validator tools and alerts
- 1. Alert if node is down
- 2. Alert if node is out of sync
- 3. Alert if node produce less blocks than expected
- 4. Validator info:
-    - Pool name
-    - Pubkey
-    - Stake
-    - Blocks produced and expected
- 5. Node logs
- 
 ### Installation
  1. Create telegram bot and get Api Token with @BotFather.
  2. Send to your new bot command /start
  3. Clone bot to server
 ```sh
-cd $HOME && git clone -v https://github.com/ama31337/serverbot.git && cd ./serverbot && chmod +x ./installsbot.sh
+cd $HOME && git clone -v https://github.com/leonguyen52/serverbot-tg.git && cd ./serverbot && chmod +x ./installsbot.sh
 ```
  4. Open ./config.py and insert your bot API and your telegram id.
  5. Run script ./installsbot.sh for Ubuntu/Debian and ./installsbot_centos.sh for CentOS, source your bash or zsh to make bot start/stop commands working
