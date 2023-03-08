@@ -85,6 +85,39 @@ lt_starttime = ("Uptime")
 lt_starttime = "\U0001F7E2 " + lt_starttime
 lt_mainmenu = ("Main menu")
 lt_mainmenu =  "\U0001F3E1 " + lt_mainmenu
+lt_nearnext = ("Next")
+lt_nearnext = "\u23e9 " + lt_nearnext
+
+## /Menu vars
+
+# Menu vars
+lt_cpu = ("CPU")
+lt_cpu = "\U0001F39B " + lt_cpu
+lt_ram = ("RAM")
+lt_ram = "\U0001F39A " + lt_ram
+lt_disks = ("Disk usage")
+lt_disks = "\U0001F4BE " + lt_disks
+lt_linuxtools = ("Linux tools")
+lt_linuxtools = "\U0001F9F0 " + lt_linuxtools
+#----
+lt_ping = ("Ping test")
+lt_ping =  "\U0001F3D3 " + lt_ping
+lt_traceroute = ("Traceroute test")
+lt_traceroute =  "\U0001F9ED " + lt_traceroute
+lt_topproc = ("Top processes")
+lt_topproc =  "\U0001F51D " + lt_topproc
+#lt_ssvalid = ("Port check")
+#lt_ssvalid =  "\U0001F442\U0001F3FC " + lt_ssvalid
+lt_spdtst = ("Network speed test")
+lt_spdtst =  "\U0001F4E1 " + lt_spdtst
+lt_currntwrkload = ("Current network load")
+lt_currntwrkload =  "\U0001F51B " + lt_currntwrkload
+lt_currntdiskload = ("Current disk i/o")
+lt_currntdiskload = "\U0001F4BD " + lt_currntdiskload
+lt_starttime = ("Uptime")
+lt_starttime = "\U0001F7E2 " + lt_starttime
+lt_mainmenu = ("Main menu")
+lt_mainmenu =  "\U0001F3E1 " + lt_mainmenu
 lt_neartools = ("NEAR tools")
 lt_neartools = "\u24c3 " + lt_neartools
 lt_nearpool = ("My pool info")
@@ -109,7 +142,7 @@ currntdiskload = types.KeyboardButton(lt_currntdiskload)
 neartools = types.KeyboardButton(lt_neartools)
 linuxtools = types.KeyboardButton(lt_linuxtools)
 markup.row(cpu,ram,disks)
-markup.row(currntdiskload,neartools,linuxtools)
+markup.row(currntdiskload,linuxtools)
 
 # Near markup
 markupnear = types.ReplyKeyboardMarkup()
@@ -2383,171 +2416,6 @@ def kill(proc_pid):
     proc.kill()
   process.kill()
 
-# Validator node monitoring
-def AlertsNotificationsNode():
-  td = 0
-  alrtprdnode = 5
-  while True:
-    if td == 5:
-      td = 0
-      # Check validator node running
-      try:
-        valnodecheck = str(subprocess.check_output(["pidof ", nearpid], encoding='utf-8'))
-        alrtprdnode =5
-      except subprocess.CalledProcessError as i:
-        if i.output != None:
-          if alrtprdnode in config.repeattimealarmnode:
-            try:
-              bot.send_message(config.tg, text="\U0001F6A8 " + ("Near node is not running."))
-              time.sleep(2)
-            except:
-              pass
-            alrtprdnode +=5
-          else:
-            alrtprdnode +=5
-    time.sleep(5)
-    td += 5
-
-# NEAR Node sync monitoring
-def AlertsNotificationsSync():
-  td = 0
-  alrtprdsync = 5
-  while True:
-    if td == 5:
-      try:
-        td = 0
-#        netcurlrequest = str("curl -s " + "https://rpc." + config.nearnetwork + ".near.org/status | jq .sync_info.latest_block_height")
-        netcurlrequest = str("curl -s " + rpcurl + "/status | jq .sync_info.latest_block_height")
-        netblockheight = int(subprocess.check_output([netcurlrequest], shell = True,encoding='utf-8'))
-        localblockheight = str(subprocess.check_output(["curl -s http://127.0.0.1:3030/status | jq .sync_info.latest_block_height"], shell = True, encoding='utf-8'))
-        localblockheight = localblockheight or 1
-        syncdiff = int(netblockheight - localblockheight)
-#        with open(os.path.join(config.tontgpathdb, "sync.dat"), "a") as i:
-#          i.write(str(int(time.time())) + ";" + netblockheight + localblockheight + syncdiff + "\n")
-        if int(float(syncdiff)) >= config.syncalarm:
-          if alrtprdsync in config.repeattimealarmnode:
-            try:
-                bot.send_message(config.tg,"\U0001F6A8 " + ("Node out of sync ") + str(syncdiff) + (" blocks behind") )
-            except:
-              pass
-            alrtprdsync +=5
-          else:
-            alrtprdsync +=5
-        if int(float(syncdiff)) < config.syncalarm:
-          alrtprdsync = 5
-        time.sleep(5)
-        td += 5
-      except:
-        time.sleep(5)
-        td += 5
-    else:
-      time.sleep(5)
-      td += 5
-
-# NEAR Blocks pruduce monitoring
-def AlertsNotificationsBlocks():
-  td = 0
-  alrtprdblocks = 30
-  while True:
-    if td == 30:
-      try:
-        td = 0
-        values = '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}'
-        session = requests.Session()
-        H = {"Content-Type": "application/json"}
-        response = session.post(rpcurl, values, headers = H)#
-        response_text = response.text
-        json_str = response_text.replace("'", "\"")
-        json_main = json.loads(json_str)
-        level_one = json_main["result"]
-        level_two = level_one["current_validators"]
-        accounts_list = []
-        target_account = config.poolname
-        for item in level_two:
-            account_id = item['account_id']
-            if account_id == target_account:
-                num_produced_blocks = item["num_produced_blocks"]
-                num_expected_blocks = item["num_expected_blocks"]
-                num_produced_chunks = item["num_produced_chunks"]
-                num_expected_chunks = item["num_expected_chunks"]
-                blocksdiff = num_expected_blocks - num_produced_blocks
-                chunksdiff = num_expected_chunks - num_produced_chunks
-        # History data
-        with open(os.path.join(config.serverbotpathdb, "blocks.dat"), "a") as i:
-            i.write(str(int(time.time())) + ";" + str(int(num_produced_blocks)) + ";" + str(int(num_expected_blocks)) + ";" + str(int(blocksdiff)) + "\n")
-        # Alert blocks
-        if int(float(blocksdiff)) >= config.blocksdiff:
-          if alrtprdblocks in config.repeattimealarmnode:
-            try:
-                bot.send_message(config.tg,"\U0001F6A8 " + str(blocksdiff) + ("blocks pruduced less than expected !!! "))
-            except:
-              pass
-            alrtprdblocks +=30
-          else:
-            alrtprdblocks +=30
-        if int(float(blocksdiff)) < config.blocksdiff:
-          alrtprdblocks = 30
-        time.sleep(30)
-        td += 30
-      except:
-        time.sleep(30)
-        td += 30
-    else:
-      time.sleep(30)
-      td += 30
-
-# NEAR Chunks pruduce monitoring
-def AlertsNotificationsChunks():
-  td = 0
-  alrtprdchunks = 30
-  while True:
-    if td == 30:
-      try:
-        td = 0
-        values = '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}'
-        session = requests.Session()
-        H = {"Content-Type": "application/json"}
-        response = session.post(rpcurl, values, headers = H)#
-        response_text = response.text
-        json_str = response_text.replace("'", "\"")
-        json_main = json.loads(json_str)
-        level_one = json_main["result"]
-        level_two = level_one["current_validators"]
-        accounts_list = []
-        target_account = config.poolname
-        for item in level_two:
-            account_id = item['account_id']
-            if account_id == target_account:
-                num_produced_blocks = item["num_produced_blocks"]
-                num_expected_blocks = item["num_expected_blocks"]
-                num_produced_chunks = item["num_produced_chunks"]
-                num_expected_chunks = item["num_expected_chunks"]
-                blocksdiff = num_expected_blocks - num_produced_blocks
-                chunksdiff = num_expected_chunks - num_produced_chunks
-        # History data
-        with open(os.path.join(config.serverbotpathdb, "chunks.dat"), "a") as i:
-            i.write(str(int(time.time())) + ";" + str(int(num_produced_chunks)) + ";" + str(int(num_expected_chunks)) + ";" + str(int(chunksdiff)) + "\n")
-        # Alert chunks
-        if int(float(chunksdiff)) >= config.chunksdiff:
-          if alrtprdchunks in config.repeattimealarmnode:
-            try:
-                bot.send_message(config.tg,"\U0001F6A8 " + str(chunksdiff) + ("chunks pruduced less than expected !!! "))
-            except:
-              pass
-            alrtprdchunks +=30
-          else:
-            alrtprdchunks +=30
-        if int(float(chunksdiff)) < config.chunksdiff:
-          alrtprdchunks = 30
-        time.sleep(30)
-        td += 30
-      except:
-        time.sleep(30)
-        td += 30
-    else:
-      time.sleep(30)
-      td += 30
-
 # RAM Monitoring
 def AlertsNotificationsRam():
   td = 0
@@ -2697,22 +2565,6 @@ def monitoringdiskio():
 
 
 if __name__ == '__main__':
-
-  if config.cfgAlertsNotificationsNode == 1:
-    AlertsNotificationsNode = threading.Thread(target = AlertsNotificationsNode)
-    AlertsNotificationsNode.start()
-
-  if config.cfgAlertsNotificationsSync == 1:
-    AlertsNotificationsSync = threading.Thread(target = AlertsNotificationsSync)
-    AlertsNotificationsSync.start()
-
-  if config.cfgAlertsNotificationsBlocks == 1:
-    AlertsNotificationsBlocks = threading.Thread(target = AlertsNotificationsBlocks)
-    AlertsNotificationsBlocks.start()
-
-  if config.cfgAlertsNotificationsChunks == 1:
-    AlertsNotificationsChunks = threading.Thread(target = AlertsNotificationsChunks)
-    AlertsNotificationsChunks.start()
 
   if config.cfgAlertsNotificationsRam == 1:
     AlertsNotificationsRam = threading.Thread(target = AlertsNotificationsRam)
