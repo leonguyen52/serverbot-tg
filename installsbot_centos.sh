@@ -14,12 +14,12 @@ pip3 install --upgrade pandas --user
 
 echo "Prepare configs"
 sed -i "s/<user>/"$USER"/g" serverbot.service.centos config.py
-echo "alias botstop='sudo systemctl stop serverbot'" >> /home/$USER/.bash_aliases
-echo "alias botstart='sudo systemctl start serverbot'" >> /home/$USER/.bash_aliases
-echo "alias botstatus='sudo systemctl status serverbot'" >> /home/$USER/.bash_aliases
-echo "alias botstop='sudo systemctl stop serverbot'" >> /home/$USER/.zshrc
-echo "alias botstart='sudo systemctl start serverbot'" >> /home/$USER/.zshrc
-echo "alias botstatus='sudo systemctl status serverbot'" >> /home/$USER/.zshrc
+echo "alias botstop='sudo systemctl stop serverbot'" >> ~/.bashrc
+echo "alias botstart='sudo systemctl start serverbot'" >> ~/.bashrc
+echo "alias botstatus='sudo systemctl status serverbot'" >> ~/.bashrc
+echo "alias botstop='sudo systemctl stop serverbot'" >> ~/.zshrc
+echo "alias botstart='sudo systemctl start serverbot'" >> ~/.zshrc
+echo "alias botstatus='sudo systemctl status serverbot'" >> ~/.zshrc
 
 
 echo "Copy files"
