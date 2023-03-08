@@ -1,0 +1,52 @@
+Guide to install Python 3.9
+1. Check the Installed Version
+Check the installed Python3 version.
+
+# python3 -V
+You will see something like this.
+
+Python 3.6.8
+If your version is older than your application requires, proceed with this guide.
+
+2. Update Python3
+Install the required dependencies to compile the Python source code.
+
+# yum groupinstall 'development tools' -y && yum install wget openssl-devel bzip2-devel libffi-devel xz-devel -y
+Visit Python's Source Code Download page to find the latest gzipped source release. Replace the URLs and filenames in this guide with the latest version.
+
+Download the latest Python3 source code.
+
+# wget https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tgz
+Extract the downloaded python source code archive.
+
+# tar xzf Python-3.9.6.tgz
+Compile the python source code.
+
+# cd Python-3.9.6 && ./configure --enable-optimizations
+Install Python.
+
+# make altinstall
+Check the name of your new Python executable.
+
+# ls /usr/local/bin/python*
+Set the new Python executable as default. Replace the two instances of /python3.9 in the following command with the name of your new Python executable.
+
+# alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1 && alternatives --set python3 /usr/local/bin/python3.9 && echo "2" | alternatives --config python
+2. Update Pip
+Update pip. Use the name of your new Python executable in the following command.
+
+# /usr/local/bin/python3.9 -m pip install --upgrade pip
+Check the name of your new pip executable.
+
+# ls /usr/local/bin/pip*
+Set the new pip as the default. Use the name of your new pip executable in the following command.
+
+# alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.9 1 && alternatives --set pip /usr/local/bin/pip3.9
+Check the current version of Python and pip.
+
+# python -V && pip -V
+You will see something like this:
+
+Python 3.9.6
+
+pip 21.2.3 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
