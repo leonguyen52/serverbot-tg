@@ -13,7 +13,7 @@ pip3 install --upgrade numpy --user
 pip3 install --upgrade pandas --user
 
 echo "Prepare configs"
-sed -i "s/<user>/"$USER"/g" serverbot.service.centos config.py
+#sed -i "s/<user>/"$USER"/g" serverbot.service.centos config.py
 echo "alias botstop='sudo systemctl stop serverbot'" >> ~/.bashrc
 echo "alias botstart='sudo systemctl start serverbot'" >> ~/.bashrc
 echo "alias botstatus='sudo systemctl status serverbot'" >> ~/.bashrc
