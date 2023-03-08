@@ -1,7 +1,7 @@
 # ServerBot Readme
 This is telegram bot for server monitoring. 
 This bot can send messages to your telegram id
-Tested on ubuntu 18.04, cent 7 & python 3.9
+Tested on CentOS 7 & python 3.9
 
 # What this bot can do?
 
