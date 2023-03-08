@@ -31,7 +31,35 @@ Check the name of your new Python executable.
 # ls /usr/local/bin/python*
 Set the new Python executable as default. Replace the two instances of /python3.9 in the following command with the name of your new Python executable.
 
-# alternatives --install /usr/bin/python3 python3 /usr/local/bin/python3.9 1 && alternatives --set python3 /usr/local/bin/python3.9 && echo "2" | alternatives --config python
+# Start by registering python2 as an alternative
+alternatives --install /usr/bin/python python /usr/bin/python2 50
+
+# Register python3.5 as an alternative
+alternatives --install /usr/bin/python python /usr/bin/python3 60
+
+# Select which Python version to use
+alternatives --config python
+
+yum groupinstall 'development tools' -y && yum install wget openssl-devel bzip2-devel libffi-devel xz-devel -y
+mkdir Python3.9
+cd Python3.9
+wget https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tgz
+tar xzf Python-3.9.6.tgz
+cd Python-3.9.6 && ./configure --enable-optimizations
+
+#Install Python.
+make altinstall
+
+# Check the name of your new Python executable.
+ls /usr/local/bin/python*
+
+#Set the new Python executable as default. Replace the two instances of /python3.9 in the following command with the name of your new Python executable.
+# Start by registering python2 as an alternative, set python3 as python, use config to select option
+
+alternatives --install /usr/bin/python python /usr/bin/python2 50
+alternatives --install /usr/bin/python python /usr/bin/python3 60
+alternatives --config python
+
 2. Update Pip
 Update pip. Use the name of your new Python executable in the following command.
 
